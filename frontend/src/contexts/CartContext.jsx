@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
+import { toast } from 'sonner';
 import api from '../services/api';
 import { useAuth } from './AuthContext';
 
@@ -97,17 +98,20 @@ export const CartProvider = ({ children }) => {
       
       if (response.data.success) {
         await loadCart(); // Refresh cart
+        toast.success(`${menuItem.name} added to cart`);
         return { 
           success: true,
           message: `${menuItem.name} added to cart`
         };
       }
       
+      toast.error(response.data.message || 'Failed to add item to cart');
       return {
         success: false,
         error: response.data.message || 'Failed to add item to cart'
       };
     } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to add item to cart');
       return {
         success: false,
         error: error.response?.data?.message || 'Failed to add item to cart',
@@ -128,11 +132,13 @@ export const CartProvider = ({ children }) => {
         return { success: true };
       }
       
+      toast.error(response.data.message || 'Failed to update quantity');
       return {
         success: false,
         error: response.data.message || 'Failed to update quantity'
       };
     } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to update quantity');
       return {
         success: false,
         error: error.response?.data?.message || 'Failed to update quantity',
@@ -146,14 +152,17 @@ export const CartProvider = ({ children }) => {
       
       if (response.data.success) {
         await loadCart(); // Refresh cart
+        toast.success('Item removed from cart');
         return { success: true };
       }
       
+      toast.error(response.data.message || 'Failed to remove item from cart');
       return {
         success: false,
         error: response.data.message || 'Failed to remove item from cart'
       };
     } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to remove item from cart');
       return {
         success: false,
         error: error.response?.data?.message || 'Failed to remove item from cart',
@@ -179,8 +188,10 @@ export const CartProvider = ({ children }) => {
         appliedCoupon: null
       });
       
+      toast.success('Cart cleared');
       return { success: true };
     } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to clear cart');
       return {
         success: false,
         error: error.response?.data?.message || 'Failed to clear cart',
@@ -201,6 +212,7 @@ export const CartProvider = ({ children }) => {
       
       if (response.data.success) {
         await loadCart(); // Refresh cart with coupon applied
+        toast.success(`Coupon ${couponCode} applied successfully`);
         return { 
           success: true,
           message: `Coupon ${couponCode} applied successfully`,
@@ -208,11 +220,13 @@ export const CartProvider = ({ children }) => {
         };
       }
       
+      toast.error(response.data.message || 'Invalid coupon code');
       return {
         success: false,
         error: response.data.message || 'Invalid coupon code'
       };
     } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to apply coupon');
       return {
         success: false,
         error: error.response?.data?.message || 'Failed to apply coupon',
@@ -226,17 +240,20 @@ export const CartProvider = ({ children }) => {
       
       if (response.data.success) {
         await loadCart(); // Refresh cart
+        toast.success('Coupon removed successfully');
         return { 
           success: true,
           message: 'Coupon removed successfully'
         };
       }
       
+      toast.error(response.data.message || 'Failed to remove coupon');
       return {
         success: false,
         error: response.data.message || 'Failed to remove coupon'
       };
     } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to remove coupon');
       return {
         success: false,
         error: error.response?.data?.message || 'Failed to remove coupon',

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import api from '../services/api';
 import { useAuth } from './AuthContext';
 
@@ -63,6 +64,7 @@ export const OrderProvider = ({ children }) => {
         setOrders(prev => [newOrder, ...prev]);
         setCurrentOrder(newOrder);
         
+        toast.success('Order placed successfully');
         return { 
           success: true, 
           order: newOrder,
@@ -70,11 +72,13 @@ export const OrderProvider = ({ children }) => {
         };
       }
       
+      toast.error(response.data.message || 'Failed to create order');
       return {
         success: false,
         error: response.data.message || 'Failed to create order'
       };
     } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to place order');
       return {
         success: false,
         error: error.response?.data?.message || 'Failed to place order'
@@ -135,17 +139,20 @@ export const OrderProvider = ({ children }) => {
             : o
         ));
         
+        toast.success('Order cancelled successfully');
         return { 
           success: true, 
           message: 'Order cancelled successfully'
         };
       }
       
+      toast.error(response.data.message || 'Failed to cancel order');
       return {
         success: false,
         error: response.data.message || 'Failed to cancel order'
       };
     } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to cancel order');
       return {
         success: false,
         error: error.response?.data?.message || 'Failed to cancel order'
@@ -194,17 +201,20 @@ export const OrderProvider = ({ children }) => {
             : o
         ));
         
+        toast.success('Thank you for your feedback!');
         return { 
           success: true, 
           message: 'Thank you for your feedback!'
         };
       }
       
+      toast.error(response.data.message || 'Failed to submit rating');
       return {
         success: false,
         error: response.data.message || 'Failed to submit rating'
       };
     } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to submit rating');
       return {
         success: false,
         error: error.response?.data?.message || 'Failed to submit rating'
@@ -218,17 +228,20 @@ export const OrderProvider = ({ children }) => {
       const response = await api.orders.reorder(orderId);
       
       if (response.data.success) {
+        toast.success('Items added to cart successfully');
         return { 
           success: true, 
           message: 'Items added to cart successfully'
         };
       }
       
+      toast.error(response.data.message || 'Failed to reorder');
       return {
         success: false,
         error: response.data.message || 'Failed to reorder'
       };
     } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to reorder');
       return {
         success: false,
         error: error.response?.data?.message || 'Failed to reorder'
@@ -253,8 +266,10 @@ export const OrderProvider = ({ children }) => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
       
+      toast.success('Invoice downloaded successfully');
       return { success: true, message: 'Invoice downloaded successfully' };
     } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to download invoice');
       return {
         success: false,
         error: error.response?.data?.message || 'Failed to download invoice'

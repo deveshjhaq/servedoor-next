@@ -77,7 +77,7 @@ This plan implements production-grade enhancements for serveDoor across six majo
     - Create `frontend/src/lib/validationSchemas.js` with phoneSchema, emailSchema, passwordSchema, loginSchema, registerSchema, addressSchema, couponSchema
     - _Requirements: 2.1.AC4, 2.1.AC5, 2.1.AC6_
   
-  - [-] 6.2 Create input sanitization utility
+  - [x] 6.2 Create input sanitization utility
     - Create `frontend/src/utils/sanitize.js` with sanitize() function stripping script tags, HTML, and javascript: URIs
     - _Requirements: 2.4.AC1_
   
@@ -85,7 +85,7 @@ This plan implements production-grade enhancements for serveDoor across six majo
     - **Property P4: Sanitization Completeness**
     - **Validates: Requirements 2.4.AC1**
   
-  - [~] 6.4 Integrate Zod schemas into existing forms
+  - [-] 6.4 Integrate Zod schemas into existing forms
     - Update EnhancedAuth, address forms, checkout, coupon input, and admin forms to use react-hook-form with zodResolver
     - Add disabled state and spinner to submit buttons during submission
     - Apply sanitize() in all form onSubmit handlers
@@ -96,28 +96,28 @@ This plan implements production-grade enhancements for serveDoor across six majo
     - _Requirements: 2.1.AC4, 2.1.AC5, 2.1.AC6_
 
 - [ ] 7. Implement UX polish components
-  - [~] 7.1 Create ConfirmDialog component
+  - [-] 7.1 Create ConfirmDialog component
     - Create `frontend/src/components/shared/ConfirmDialog.jsx` wrapping alert-dialog.jsx with title, description, confirmLabel, onConfirm, onCancel, destructive props
     - _Requirements: 2.3.AC4_
   
-  - [~] 7.2 Integrate ConfirmDialog for destructive actions
+  - [-] 7.2 Integrate ConfirmDialog for destructive actions
     - Add confirmation dialogs to order cancellation in MyOrders
     - Add confirmation dialogs to address deletion
     - Add confirmation dialogs to admin destructive actions (delete coupon, ban user, reject restaurant)
     - _Requirements: 2.3.AC1, 2.3.AC2, 2.3.AC3_
   
-  - [~] 7.3 Add toast notifications to all user actions
+  - [-] 7.3 Add toast notifications to all user actions
     - Update CartContext, OrderContext, WalletContext to call toast.success() and toast.error()
     - Replace existing Toaster in App.js with Sonner's Toaster with richColors, closeButton, duration=4000
     - _Requirements: 2.2.AC1, 2.2.AC2, 2.2.AC3, 2.2.AC4_
 
 - [ ] 8. Implement performance optimizations
-  - [~] 8.1 Add route-level code splitting
+  - [-] 8.1 Add route-level code splitting
     - Convert RestaurantDetail, AdminPanel, MyOrders, OrderTracking, NotFound to React.lazy imports in App.js
     - Wrap lazy routes in Suspense with PageSkeleton fallback
     - _Requirements: 3.1.AC1, 3.1.AC2_
   
-  - [~] 8.2 Create OptimizedImage component
+  - [-] 8.2 Create OptimizedImage component
     - Create `frontend/src/components/shared/OptimizedImage.jsx` with lazy loading, width/height props, and fallback on error
     - _Requirements: 3.2.AC3, 3.2.AC4_
   

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import api from '../services/api';
 import { useAuth } from './AuthContext';
 
@@ -75,6 +76,7 @@ export const WalletProvider = ({ children }) => {
       if (response.data.success) {
         // Update balance and transactions
         await fetchWalletData();
+        toast.success(`₹${amount} added to wallet successfully`);
         return { 
           success: true, 
           message: `₹${amount} added to wallet successfully`,
@@ -82,11 +84,13 @@ export const WalletProvider = ({ children }) => {
         };
       }
       
+      toast.error(response.data.message || 'Failed to add money');
       return {
         success: false,
         error: response.data.message || 'Failed to add money'
       };
     } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to add money to wallet');
       return {
         success: false,
         error: error.response?.data?.message || 'Failed to add money to wallet'
@@ -116,14 +120,17 @@ export const WalletProvider = ({ children }) => {
       
       if (response.data.success) {
         setBalance(prev => prev - amount);
+        toast.success(`₹${amount} deducted from wallet`);
         return { success: true };
       }
       
+      toast.error(response.data.message || 'Failed to use wallet balance');
       return {
         success: false,
         error: response.data.message || 'Failed to use wallet balance'
       };
     } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to use wallet balance');
       return {
         success: false,
         error: error.response?.data?.message || 'Failed to use wallet balance'

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -6,9 +7,9 @@ import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { Switch } from '../ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { useToast } from '../../hooks/use-toast';
 import api from '../../services/api';
 import EmptyState from '../shared/EmptyState';
+import ConfirmDialog from '../shared/ConfirmDialog';
 import {
   Plus, Gift, Edit, Trash2, Copy, Calendar,
   Percent, DollarSign, Users
@@ -95,6 +96,7 @@ const CouponManagement = () => {
   const [loading, setLoading] = useState(false);
   const [showCouponForm, setShowCouponForm] = useState(false);
   const [editingCoupon, setEditingCoupon] = useState(null);
+  const [deletingCoupon, setDeletingCoupon] = useState(null);
   const [formData, setFormData] = useState({
     code: '',
     title: '',
@@ -108,7 +110,6 @@ const CouponManagement = () => {
     valid_until: '',
     applicable_to: 'all'
   });
-  const { toast } = useToast();
 
   const discountTypes = [
     { value: 'percentage', label: 'Percentage' },
@@ -167,10 +168,7 @@ const CouponManagement = () => {
             ? { ...coupon, ...couponData, updated_at: new Date() }
             : coupon
         ));
-        toast({
-          title: "Success",
-          description: "Coupon updated successfully"
-        });
+        toast.success('Coupon updated successfully');
       } else {
         // Create new coupon
         const newCoupon = {
@@ -183,20 +181,13 @@ const CouponManagement = () => {
         };
         
         setCoupons(prev => [...prev, newCoupon]);
-        toast({
-          title: "Success",
-          description: "Coupon created successfully"
-        });
+        toast.success('Coupon created successfully');
       }
       
       setShowCouponForm(false);
       resetForm();
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to save coupon",
-        variant: "destructive"
-      });
+      toast.error('Failed to save coupon');
     }
   };
 
@@ -206,16 +197,9 @@ const CouponManagement = () => {
         coupon.id === couponId ? { ...coupon, is_active: isActive } : coupon
       ));
       
-      toast({
-        title: "Success",
-        description: `Coupon ${isActive ? 'activated' : 'deactivated'} successfully`
-      });
+      toast.success(`Coupon ${isActive ? 'activated' : 'deactivated'} successfully`);
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update coupon status",
-        variant: "destructive"
-      });
+      toast.error('Failed to update coupon status');
     }
   };
 
@@ -237,30 +221,22 @@ const CouponManagement = () => {
     setShowCouponForm(true);
   };
 
-  const handleDeleteCoupon = async (couponId) => {
-    if (window.confirm('Are you sure you want to delete this coupon?')) {
-      try {
-        setCoupons(prev => prev.filter(coupon => coupon.id !== couponId));
-        toast({
-          title: "Success",
-          description: "Coupon deleted successfully"
-        });
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to delete coupon",
-          variant: "destructive"
-        });
-      }
+  const handleDeleteCoupon = async () => {
+    if (!deletingCoupon) return;
+    
+    try {
+      setCoupons(prev => prev.filter(coupon => coupon.id !== deletingCoupon.id));
+      toast.success('Coupon deleted successfully');
+    } catch (error) {
+      toast.error('Failed to delete coupon');
+    } finally {
+      setDeletingCoupon(null);
     }
   };
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
-    toast({
-      title: "Copied!",
-      description: `Coupon code "${text}" copied to clipboard`
-    });
+    toast.success(`Coupon code "${text}" copied to clipboard`);
   };
 
   const formatDate = (date) => {
@@ -468,7 +444,7 @@ const CouponManagement = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => handleDeleteCoupon(coupon.id)}
+                      onClick={() => setDeletingCoupon(coupon)}
                     >
                       <Trash2 className="w-4 h-4 mr-1" />
                       Delete
@@ -697,6 +673,18 @@ const CouponManagement = () => {
           </div>
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        open={!!deletingCoupon}
+        title="Delete Coupon?"
+        description={`Are you sure you want to delete the coupon "${deletingCoupon?.code}"? This action cannot be undone.`}
+        confirmLabel="Delete Coupon"
+        cancelLabel="Cancel"
+        destructive
+        onConfirm={handleDeleteCoupon}
+        onCancel={() => setDeletingCoupon(null)}
+      />
     </div>
   );
 };

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { toast } from 'sonner';
 import { Package, MapPin, Clock, Download, RefreshCw, ChevronRight, Star, X } from 'lucide-react';
 import { Button } from '../ui/button';
 import api from '../../services/api';
 import OrderTracking from './OrderTracking';
 import RatingModal from './RatingModal';
 import EmptyState from '../shared/EmptyState';
+import ConfirmDialog from '../shared/ConfirmDialog';
 import { OrderRowSkeleton } from '../shared/PageSkeleton';
 
 const STATUS_CONFIG = {
@@ -18,10 +20,11 @@ const STATUS_CONFIG = {
   cancelled: { label: 'Cancelled', color: 'bg-red-100 text-red-700', dot: 'bg-red-500' },
 };
 
-const OrderCard = ({ order, onTrack, onDownloadInvoice, onReorder, onRate }) => {
+const OrderCard = ({ order, onTrack, onDownloadInvoice, onReorder, onRate, onCancel }) => {
   const [downloading, setDownloading] = useState(false);
   const status = STATUS_CONFIG[order.status] || STATUS_CONFIG.placed;
   const canTrack = ['placed', 'confirmed', 'preparing', 'on_way'].includes(order.status);
+  const canCancel = ['placed', 'confirmed'].includes(order.status);
   const canInvoice = order.status === 'delivered';
   const canRate = order.status === 'delivered' && !order.rating;
   const hasRating = !!order.rating;
@@ -106,6 +109,18 @@ const OrderCard = ({ order, onTrack, onDownloadInvoice, onReorder, onRate }) => 
             <p className="font-bold text-gray-900">₹{order.total?.toFixed(2) || '0.00'}</p>
           </div>
           <div className="flex gap-2 flex-wrap justify-end">
+            {canCancel && (
+              <Button
+                size="sm"
+                variant="outline"
+                className="border-red-200 text-red-600 hover:bg-red-50 text-xs h-8"
+                onClick={() => onCancel(order)}
+                data-testid={`cancel-btn-${order.orderId}`}
+              >
+                <X className="w-3 h-3 mr-1" />
+                Cancel
+              </Button>
+            )}
             {canTrack && (
               <Button
                 size="sm"
@@ -172,6 +187,7 @@ const MyOrders = ({ onClose }) => {
   const [loading, setLoading] = useState(true);
   const [trackingOrderId, setTrackingOrderId] = useState(null);
   const [ratingOrder, setRatingOrder] = useState(null);
+  const [cancellingOrder, setCancellingOrder] = useState(null);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -210,18 +226,43 @@ const MyOrders = ({ onClose }) => {
       a.download = `invoice-${friendlyId || orderId}.pdf`;
       a.click();
       window.URL.revokeObjectURL(url);
-      showMessage('Invoice downloaded successfully!');
+      toast.success('Invoice downloaded successfully!');
     } catch (err) {
-      showMessage('Invoice download failed. Please try again.', true);
+      toast.error('Invoice download failed. Please try again.');
     }
   };
 
   const handleReorder = async (orderId) => {
     try {
       await api.orders.reorder(orderId);
-      showMessage('Items added to cart!');
+      toast.success('Items added to cart!');
     } catch (err) {
-      showMessage('Reorder failed. Try again.', true);
+      toast.error('Reorder failed. Try again.');
+    }
+  };
+
+  const handleCancelOrder = async () => {
+    if (!cancellingOrder) return;
+    
+    try {
+      const response = await api.orders.cancel(cancellingOrder.id || cancellingOrder._id, 'Customer request');
+      if (response.data?.success) {
+        // Update local state
+        setOrders((prev) =>
+          prev.map((o) =>
+            (o.id === cancellingOrder.id || o._id === cancellingOrder._id)
+              ? { ...o, status: 'cancelled', cancellationReason: 'Customer request' }
+              : o
+          )
+        );
+        toast.success('Order cancelled successfully');
+      } else {
+        toast.error(response.data?.message || 'Failed to cancel order');
+      }
+    } catch (err) {
+      toast.error('Failed to cancel order. Try again.');
+    } finally {
+      setCancellingOrder(null);
     }
   };
 
@@ -234,12 +275,7 @@ const MyOrders = ({ onClose }) => {
           : o
       )
     );
-    showMessage('Thanks for your feedback! 🎉');
-  };
-
-  const showMessage = (msg, isError = false) => {
-    setMessage({ text: msg, isError });
-    setTimeout(() => setMessage(''), 3500);
+    toast.success('Thanks for your feedback! 🎉');
   };
 
   return (
@@ -263,19 +299,6 @@ const MyOrders = ({ onClose }) => {
               <X className="w-5 h-5 text-gray-500" />
             </button>
           </div>
-
-          {/* Toast */}
-          {message && (
-            <div
-              className={`mx-5 mt-3 text-sm px-4 py-2.5 rounded-lg border ${
-                message.isError
-                  ? 'bg-red-50 border-red-200 text-red-700'
-                  : 'bg-green-50 border-green-200 text-green-700'
-              }`}
-            >
-              {message.text || message}
-            </div>
-          )}
 
           {/* Content */}
           <div className="p-5">
@@ -306,6 +329,7 @@ const MyOrders = ({ onClose }) => {
                     onDownloadInvoice={(id) => handleDownloadInvoice(id, order.orderId)}
                     onReorder={handleReorder}
                     onRate={(ord) => setRatingOrder(ord)}
+                    onCancel={(ord) => setCancellingOrder(ord)}
                   />
                 ))}
               </div>
@@ -350,6 +374,18 @@ const MyOrders = ({ onClose }) => {
           onRated={handleRated}
         />
       )}
+
+      {/* Cancel Order Confirmation */}
+      <ConfirmDialog
+        open={!!cancellingOrder}
+        title="Cancel Order?"
+        description="Are you sure you want to cancel this order? This action cannot be undone."
+        confirmLabel="Yes, Cancel Order"
+        cancelLabel="Keep Order"
+        destructive
+        onConfirm={handleCancelOrder}
+        onCancel={() => setCancellingOrder(null)}
+      />
     </>
   );
 };

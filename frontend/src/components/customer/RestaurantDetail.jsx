@@ -9,6 +9,7 @@ import { useToast } from '../../hooks/use-toast';
 import api from '../../services/api';
 import Header from '../Header';
 import Footer from '../Footer';
+import OptimizedImage from '../shared/OptimizedImage';
 import { MenuSectionSkeleton } from '../shared/PageSkeleton';
 
 const RestaurantDetail = () => {
@@ -229,13 +230,12 @@ const RestaurantDetail = () => {
 
           <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-start md:items-end mb-6">
             <div className="w-full md:w-56 h-40 md:h-56 rounded-2xl overflow-hidden shadow-2xl shrink-0 bg-gray-800 border-4 border-gray-800">
-              <img 
+              <OptimizedImage 
                 src={restaurant.image} 
                 alt={restaurant.name}
+                width={224}
+                height={224}
                 className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                onError={(e) => {
-                  e.target.src = 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80';
-                }}
               />
             </div>
             
@@ -360,13 +360,12 @@ const RestaurantDetail = () => {
                         </div>
 
                         <div className="w-32 h-32 shrink-0 relative flex flex-col items-center">
-                          <img 
+                          <OptimizedImage 
                             src={item.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=300&q=80'} 
                             alt={item.name}
+                            width={128}
+                            height={112}
                             className="w-full h-28 object-cover rounded-xl shadow-sm"
-                            onError={(e) => {
-                              e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=300&q=80';
-                            }}
                           />
                           {!item.isAvailable && (
                             <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] rounded-xl flex items-center justify-center pb-4">
