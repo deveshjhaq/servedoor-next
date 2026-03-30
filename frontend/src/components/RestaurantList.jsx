@@ -1,15 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import RestaurantCard from './RestaurantCard';
 import { Button } from './ui/button';
-import { SearchX } from 'lucide-react';
+import { SearchX, Search, Loader2 } from 'lucide-react';
 import { SlidersHorizontal } from 'lucide-react';
+import { Input } from './ui/input';
 import api from '../services/api';
 import EmptyState from './shared/EmptyState';
 import { RestaurantCardSkeleton } from './shared/PageSkeleton';
+import useDebounce from '../hooks/useDebounce';
 
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState([]);
+  const [allRestaurants, setAllRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const debouncedSearchQuery = useDebounce(searchQuery, 400);
+  const [isSearching, setIsSearching] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [userLocation, setUserLocation] = useState(null);
 
@@ -41,6 +47,28 @@ const RestaurantList = () => {
   useEffect(() => {
     fetchRestaurants();
   }, [selectedFilter, userLocation]);
+
+  useEffect(() => {
+    if (debouncedSearchQuery !== searchQuery) {
+      setIsSearching(true);
+    } else {
+      setIsSearching(false);
+      applySearchFilter();
+    }
+  }, [debouncedSearchQuery, searchQuery]);
+
+  const applySearchFilter = useCallback(() => {
+    if (!debouncedSearchQuery.trim()) {
+      setRestaurants(allRestaurants);
+      return;
+    }
+
+    const filtered = allRestaurants.filter(restaurant =>
+      restaurant.name.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+      restaurant.cuisine.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
+    );
+    setRestaurants(filtered);
+  }, [debouncedSearchQuery, allRestaurants]);
 
   const fetchRestaurants = async () => {
     try {
@@ -76,19 +104,29 @@ const RestaurantList = () => {
       }
 
       const response = await api.restaurants.getAll(params);
+      setAllRestaurants(response.data);
       setRestaurants(response.data);
     } catch (error) {
       console.error('Failed to fetch restaurants:', error);
       // Fallback to empty array
+      setAllRestaurants([]);
       setRestaurants([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleFilter = (filterId) => {
+  const handleFilter = useCallback((filterId) => {
     setSelectedFilter(filterId);
-  };
+  }, []);
+
+  const handleSearchChange = useCallback((e) => {
+    setSearchQuery(e.target.value);
+  }, []);
+
+  const clearSearch = useCallback(() => {
+    setSearchQuery('');
+  }, []);
 
   if (loading) {
     return (
@@ -130,6 +168,21 @@ const RestaurantList = () => {
           </Button>
         </div>
 
+        {/* Search Bar */}
+        <div className="relative mb-6">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Input
+            type="text"
+            placeholder="Search restaurants or cuisines..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="pl-10 pr-10"
+          />
+          {isSearching && (
+            <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-orange-500 w-5 h-5 animate-spin" />
+          )}
+        </div>
+
         {/* Filter Tabs */}
         <div className="flex space-x-4 mb-8 overflow-x-auto">
           {filters.map((filter) => (
@@ -162,11 +215,17 @@ const RestaurantList = () => {
           <EmptyState
             icon={<SearchX className="w-8 h-8" />}
             title="No restaurants found"
-            description="Try adjusting your filters or check back later"
+            description={searchQuery ? `No results for "${searchQuery}". Try different keywords.` : "Try adjusting your filters or check back later"}
             action={
-              <Button variant="outline" onClick={() => setSelectedFilter('all')}>
-                Clear Filters
-              </Button>
+              searchQuery ? (
+                <Button variant="outline" onClick={clearSearch}>
+                  Clear Search
+                </Button>
+              ) : (
+                <Button variant="outline" onClick={() => setSelectedFilter('all')}>
+                  Clear Filters
+                </Button>
+              )
             }
           />
         )}

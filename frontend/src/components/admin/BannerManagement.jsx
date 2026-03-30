@@ -8,6 +8,7 @@ import { Switch } from '../ui/switch';
 import { useToast } from '../../hooks/use-toast';
 import api from '../../services/api';
 import EmptyState from '../shared/EmptyState';
+import OptimizedImage from '../shared/OptimizedImage';
 import {
   Plus, Image, Edit, Trash2, Eye, EyeOff,
   Calendar, Link, Upload
@@ -254,13 +255,12 @@ const BannerManagement = () => {
         {banners.map((banner) => (
           <Card key={banner.id} className="overflow-hidden hover:shadow-lg transition-shadow">
             <div className="relative">
-              <img
+              <OptimizedImage
                 src={banner.image_url}
                 alt={banner.title}
+                width={800}
+                height={192}
                 className="w-full h-48 object-cover"
-                onError={(e) => {
-                  e.target.src = 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=800&h=300&fit=crop';
-                }}
               />
               <div className="absolute top-2 left-2 flex space-x-2">
                 <Badge className={banner.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>

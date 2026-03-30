@@ -85,7 +85,7 @@ This plan implements production-grade enhancements for serveDoor across six majo
     - **Property P4: Sanitization Completeness**
     - **Validates: Requirements 2.4.AC1**
   
-  - [-] 6.4 Integrate Zod schemas into existing forms
+  - [x] 6.4 Integrate Zod schemas into existing forms
     - Update EnhancedAuth, address forms, checkout, coupon input, and admin forms to use react-hook-form with zodResolver
     - Add disabled state and spinner to submit buttons during submission
     - Apply sanitize() in all form onSubmit handlers
@@ -96,40 +96,40 @@ This plan implements production-grade enhancements for serveDoor across six majo
     - _Requirements: 2.1.AC4, 2.1.AC5, 2.1.AC6_
 
 - [ ] 7. Implement UX polish components
-  - [-] 7.1 Create ConfirmDialog component
+  - [x] 7.1 Create ConfirmDialog component
     - Create `frontend/src/components/shared/ConfirmDialog.jsx` wrapping alert-dialog.jsx with title, description, confirmLabel, onConfirm, onCancel, destructive props
     - _Requirements: 2.3.AC4_
   
-  - [-] 7.2 Integrate ConfirmDialog for destructive actions
+  - [x] 7.2 Integrate ConfirmDialog for destructive actions
     - Add confirmation dialogs to order cancellation in MyOrders
     - Add confirmation dialogs to address deletion
     - Add confirmation dialogs to admin destructive actions (delete coupon, ban user, reject restaurant)
     - _Requirements: 2.3.AC1, 2.3.AC2, 2.3.AC3_
   
-  - [-] 7.3 Add toast notifications to all user actions
+  - [x] 7.3 Add toast notifications to all user actions
     - Update CartContext, OrderContext, WalletContext to call toast.success() and toast.error()
     - Replace existing Toaster in App.js with Sonner's Toaster with richColors, closeButton, duration=4000
     - _Requirements: 2.2.AC1, 2.2.AC2, 2.2.AC3, 2.2.AC4_
 
 - [ ] 8. Implement performance optimizations
-  - [-] 8.1 Add route-level code splitting
+  - [x] 8.1 Add route-level code splitting
     - Convert RestaurantDetail, AdminPanel, MyOrders, OrderTracking, NotFound to React.lazy imports in App.js
     - Wrap lazy routes in Suspense with PageSkeleton fallback
     - _Requirements: 3.1.AC1, 3.1.AC2_
   
-  - [-] 8.2 Create OptimizedImage component
+  - [x] 8.2 Create OptimizedImage component
     - Create `frontend/src/components/shared/OptimizedImage.jsx` with lazy loading, width/height props, and fallback on error
     - _Requirements: 3.2.AC3, 3.2.AC4_
   
-  - [~] 8.3 Replace img tags with OptimizedImage
+  - [x] 8.3 Replace img tags with OptimizedImage
     - Update RestaurantCard, RestaurantDetail, menu items, and banners to use OptimizedImage with explicit dimensions
     - _Requirements: 3.2.AC1, 3.2.AC2_
   
-  - [~] 8.4 Create useDebounce hook
+  - [x] 8.4 Create useDebounce hook
     - Create `frontend/src/hooks/useDebounce.js` with 400ms default delay
     - _Requirements: 3.3.AC2_
   
-  - [~] 8.5 Integrate debouncing in search inputs
+  - [x] 8.5 Integrate debouncing in search inputs
     - Add useDebounce to RestaurantList and RestaurantBrowser search inputs
     - Show loading spinner while debounced value differs from input value
     - _Requirements: 3.3.AC1, 3.3.AC3_
@@ -138,17 +138,17 @@ This plan implements production-grade enhancements for serveDoor across six majo
     - **Property P7: Debounce Timing**
     - **Validates: Requirements 3.3.AC1**
   
-  - [~] 8.7 Add memoization to expensive components
+  - [x] 8.7 Add memoization to expensive components
     - Wrap RestaurantCard in React.memo
     - Add useMemo to CartContext subtotal and item count calculations
     - Add useCallback to event handlers passed as props in RestaurantList and MyOrders
     - _Requirements: 3.5.AC1, 3.5.AC2, 3.5.AC3_
 
-- [~] 9. Checkpoint - Verify forms and performance
+- [x] 9. Checkpoint - Verify forms and performance
   - Ensure all tests pass, verify form validation, toast notifications, and performance improvements. Ask the user if questions arise.
 
 - [ ] 10. Implement backend pagination support
-  - [~] 10.1 Add pagination to order repository
+  - [-] 10.1 Add pagination to order repository
     - Update `backend/app/repositories/repos.py` to add get_paginated() method to OrderRepository returning (items, total)
     - _Requirements: 3.4.AC3_
   
@@ -169,7 +169,7 @@ This plan implements production-grade enhancements for serveDoor across six majo
     - **Validates: Requirements 3.4.AC3**
 
 - [ ] 11. Implement frontend pagination
-  - [~] 11.1 Create usePagination hook
+  - [x] 11.1 Create usePagination hook
     - Create `frontend/src/hooks/usePagination.js` with fetchFn, page, limit params returning data, total, pages, currentPage, setPage, loading
     - _Requirements: 3.4.AC1, 3.4.AC2_
   

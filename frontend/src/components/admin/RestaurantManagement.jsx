@@ -11,6 +11,7 @@ import {
   Eye, Filter, MoreVertical, Store
 } from 'lucide-react';
 import EmptyState from '../shared/EmptyState';
+import OptimizedImage from '../shared/OptimizedImage';
 
 const RestaurantManagement = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -166,13 +167,12 @@ const RestaurantManagement = () => {
             <CardContent className="p-0">
               {/* Restaurant Image */}
               <div className="relative h-48">
-                <img
+                <OptimizedImage
                   src={restaurant.image}
                   alt={restaurant.name}
+                  width={400}
+                  height={192}
                   className="w-full h-full object-cover rounded-t-lg"
-                  onError={(e) => {
-                    e.target.src = 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop';
-                  }}
                 />
                 {restaurant.promoted && (
                   <Badge className="absolute top-2 left-2 bg-orange-500">

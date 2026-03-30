@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
+import OptimizedImage from './shared/OptimizedImage';
 
 const CuisineCategory = () => {
   const [cuisines, setCuisines] = useState([]);
@@ -63,9 +64,11 @@ const CuisineCategory = () => {
               }}
             >
               <div className="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden mb-3 group-hover:scale-105 transition-transform duration-200">
-                <img
+                <OptimizedImage
                   src={category.image}
                   alt={category.name}
+                  width={80}
+                  height={80}
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     e.target.src = 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=150&h=150&fit=crop';

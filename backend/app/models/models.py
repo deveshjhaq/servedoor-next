@@ -105,6 +105,17 @@ class AdminUser(MongoModel):
     updatedAt: datetime = Field(default_factory=now_utc)
 
 
+class RiderUser(MongoModel):
+    phone: str
+    password: str
+    name: str = "Rider"
+    currentLocation: Optional[Coordinates] = None
+    isActive: bool = True
+    isNewUser: bool = True
+    createdAt: datetime = Field(default_factory=now_utc)
+    updatedAt: datetime = Field(default_factory=now_utc)
+
+
 class OTPStorage(MongoModel):
     phone: str
     otp: str
@@ -281,6 +292,8 @@ class Order(MongoModel):
     tracking: List[OrderTracking] = []
     estimatedDeliveryTime: Optional[datetime] = None
     actualDeliveryTime: Optional[datetime] = None
+    riderId: Optional[str] = None
+    riderName: Optional[str] = None
     
     # Post-order
     rating: Optional[OrderRating] = None

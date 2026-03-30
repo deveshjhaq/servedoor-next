@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from typing import Optional, List
 from app.repositories.base import BaseRepository
 from app.models.models import (
-    User, AdminUser, Cart, Order, Restaurant, OTPStorage, UserWallet, Banner, Coupon, SiteSettings
+    User, AdminUser, RiderUser, Cart, Order, Restaurant, OTPStorage, UserWallet, Banner, Coupon, SiteSettings
 )
 from app.core.config import OTP_EXPIRY_MINUTES, OTP_MAX_ATTEMPTS
 
@@ -31,6 +31,14 @@ class AdminRepository(BaseRepository[AdminUser]):
         super().__init__("admin_users", AdminUser)
 
     async def get_by_phone(self, phone: str) -> Optional[AdminUser]:
+        return await self.find_one({"phone": phone})
+
+
+class RiderRepository(BaseRepository[RiderUser]):
+    def __init__(self):
+        super().__init__("rider_users", RiderUser)
+
+    async def get_by_phone(self, phone: str) -> Optional[RiderUser]:
         return await self.find_one({"phone": phone})
 
 
@@ -138,6 +146,7 @@ class SettingsRepository(BaseRepository[SiteSettings]):
 # Instantiated singletons for use throughout the app
 user_repo = UserRepository()
 admin_repo = AdminRepository()
+rider_repo = RiderRepository()
 cart_repo = CartRepository()
 order_repo = OrderRepository()
 restaurant_repo = RestaurantRepository()

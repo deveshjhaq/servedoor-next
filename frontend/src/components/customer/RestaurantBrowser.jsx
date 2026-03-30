@@ -8,10 +8,11 @@ import RestaurantCard from '../RestaurantCard';
 import { useCart } from '../../contexts/CartContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../hooks/use-toast';
+import useDebounce from '../../hooks/useDebounce';
 import api from '../../services/api';
 import {
   Search, Filter, MapPin, Star, Clock, Leaf, 
-  ChefHat, SlidersHorizontal, X
+  ChefHat, SlidersHorizontal, X, Loader2
 } from 'lucide-react';
 
 const RestaurantBrowser = () => {
@@ -19,6 +20,7 @@ const RestaurantBrowser = () => {
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const debouncedSearchQuery = useDebounce(searchQuery, 400);
   const [showFilters, setShowFilters] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   
@@ -63,7 +65,7 @@ const RestaurantBrowser = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [restaurants, filters, searchQuery]);
+  }, [restaurants, filters, debouncedSearchQuery]);
 
   const fetchUserLocation = () => {
     if (navigator.geolocation) {

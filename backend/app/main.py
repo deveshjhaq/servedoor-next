@@ -21,7 +21,7 @@ from app.core.rate_limit import limiter
 
 from app.routes import (
     auth, cart, orders, restaurants,
-    users, admin, payments, notifications
+    users, admin, payments, notifications, rider
 )
 
 # ── Logging ──
@@ -112,6 +112,7 @@ app.include_router(orders.router, prefix="/api")
 app.include_router(restaurants.router, prefix="/api")
 app.include_router(payments.router, prefix="/api")
 app.include_router(notifications.router, prefix="/api")
+app.include_router(rider.router, prefix="/api")
 
 @app.get("/api/health", tags=["health"])
 async def health_check():

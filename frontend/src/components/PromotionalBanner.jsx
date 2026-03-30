@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
+import OptimizedImage from './shared/OptimizedImage';
 
 const PromotionalBanner = () => {
   const promos = [
@@ -49,9 +50,11 @@ const PromotionalBanner = () => {
               </div>
               
               <div className="absolute right-0 top-0 w-32 h-32 opacity-20">
-                <img
+                <OptimizedImage
                   src={promo.image}
                   alt={promo.title}
+                  width={128}
+                  height={128}
                   className="w-full h-full object-cover rounded-lg"
                 />
               </div>

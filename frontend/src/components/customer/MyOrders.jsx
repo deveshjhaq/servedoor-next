@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'sonner';
@@ -211,7 +211,7 @@ const MyOrders = ({ onClose }) => {
     }
   };
 
-  const handleDownloadInvoice = async (orderId, friendlyId) => {
+  const handleDownloadInvoice = useCallback(async (orderId, friendlyId) => {
     try {
       const token = localStorage.getItem('authToken');
       const apiUrl = process.env.REACT_APP_BACKEND_URL;
@@ -230,18 +230,18 @@ const MyOrders = ({ onClose }) => {
     } catch (err) {
       toast.error('Invoice download failed. Please try again.');
     }
-  };
+  }, []);
 
-  const handleReorder = async (orderId) => {
+  const handleReorder = useCallback(async (orderId) => {
     try {
       await api.orders.reorder(orderId);
       toast.success('Items added to cart!');
     } catch (err) {
       toast.error('Reorder failed. Try again.');
     }
-  };
+  }, []);
 
-  const handleCancelOrder = async () => {
+  const handleCancelOrder = useCallback(async () => {
     if (!cancellingOrder) return;
     
     try {
@@ -264,9 +264,9 @@ const MyOrders = ({ onClose }) => {
     } finally {
       setCancellingOrder(null);
     }
-  };
+  }, [cancellingOrder]);
 
-  const handleRated = (orderId, ratingValue, reviewText) => {
+  const handleRated = useCallback((orderId, ratingValue, reviewText) => {
     // Update local order state so the "Rate" button disappears
     setOrders((prev) =>
       prev.map((o) =>
@@ -276,7 +276,7 @@ const MyOrders = ({ onClose }) => {
       )
     );
     toast.success('Thanks for your feedback! 🎉');
-  };
+  }, []);
 
   return (
     <>
