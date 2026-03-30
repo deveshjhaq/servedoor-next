@@ -1,85 +1,120 @@
-# ServeDoor Fullstack
+# Servedoor Platform (Universal README)
 
-ServeDoor is a food-delivery fullstack project with:
+Servedoor is a full food-ordering platform with three major parts:
 
-- Backend: FastAPI + MongoDB
-- Frontend: React (CRACO)
+- Backend API (FastAPI + MongoDB)
+- Web frontend (React + CRACO)
+- Customer mobile app (Flutter)
 
-## Project Structure
+This README is the universal setup and usage guide for the complete workspace.
 
-- backend: API server, business logic, tests
-- frontend: customer/admin UI
+## Workspace Structure
+
+- backend: FastAPI app, routes, services, repositories, models, tests
+- frontend: React web app for customer/admin flows
+- custmer app: Flutter customer mobile app
 
 ## Prerequisites
 
-- Python 3.11+
-- Node.js 18+
-- MongoDB running locally or remotely
+- Python 3.11 or newer
+- Node.js 18 or newer
+- Flutter SDK (stable channel)
+- MongoDB instance (local or remote)
 
-## Backend Setup
+## 1) Backend Setup
 
-1. Go to backend folder
+```bash
+cd backend
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-	cd backend
+Create environment config:
 
-2. Create virtual environment and activate
+- Copy backend/.env.example to backend/.env
+- Fill values such as Mongo URI, JWT secrets, gateway keys, and CORS origin(s)
 
-	python -m venv .venv
-	.venv\\Scripts\\activate
+Run backend:
 
-3. Install dependencies
+```bash
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
+```
 
-	pip install -r requirements.txt
-
-4. Create env file
-
-	Copy .env.example to .env and fill secrets.
-
-5. Run backend
-
-	uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
-
-Backend URLs:
+Backend endpoints:
 
 - Health: http://localhost:8001/api/health
-- API docs: http://localhost:8001/api/docs
+- Swagger docs: http://localhost:8001/api/docs
+- OpenAPI JSON: http://localhost:8001/api/openapi.json
 
-## Frontend Setup
+## 2) Web Frontend Setup
 
-1. Go to frontend folder
+```bash
+cd frontend
+npm install
+npm start
+```
 
-	cd frontend
-
-2. Install dependencies
-
-	npm install
-
-3. Create env file
-
-	Copy .env.example to .env
-
-4. Run frontend
-
-	npm start
-
-Frontend URL:
+Web app runs at:
 
 - http://localhost:3000
 
-## Environment Files
+## 3) Flutter Customer App Setup
 
-- backend/.env.example
-- frontend/.env.example
+```bash
+cd "custmer app"
+flutter pub get
+flutter run
+```
+
+API base URL for mobile is configured in:
+
+- custmer app/lib/utils/ServedoorConstant.dart
+
+Notes:
+
+- Android emulator usually needs 10.0.2.2 to reach localhost
+- Physical device should use your machine LAN IP
+
+## Backend + App Integration Scope
+
+Implemented integration covers:
+
+- OTP auth
+- Restaurants and menu listing
+- Cart and order placement/tracking
+- Profile and addresses
+- Favorites
+- Restaurant gallery and reviews
+- Payment methods and payment verification flow
 
 ## Running Tests
 
-Backend tests from project root:
+From workspace root:
 
+```bash
 pytest -q
+```
 
-If tests need a custom API host, export BACKEND_URL before running.
+You can also run Flutter tests:
 
-## Notes
+```bash
+cd "custmer app"
+flutter test
+```
 
-- Keep real secrets only in local .env files.
-- Do not commit .env files to version control.
+## Security and Environment
+
+- Never commit .env files with real secrets
+- Keep API keys only in local environment files or secure secret stores
+- Review CORS and JWT settings before deployment
+
+## Readme Translations
+
+Universal README translations are available in:
+
+- README.en.md
+- README.hi.md
+- README.es.md
+- README.zh.md
+- README.ar.md

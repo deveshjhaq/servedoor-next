@@ -1,100 +1,79 @@
-<div align="center">
-    
-![demo preview](https://github.com/deveshjhaq/ServedoorCustomerApp/assets/75434191/8ea7b83f-0eaa-4d97-b52b-20eb33bdbe52)
-
-[![CodeQL](https://github.com/deveshjhaq/ServedoorCustomerApp/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/deveshjhaq/ServedoorCustomerApp/actions/workflows/github-code-scanning/codeql)
-[![Maintainer](https://img.shields.io/badge/Maintainer-deveshjhaq-blue)](https://github.com/deveshjhaq)
-[![Pull Requests](https://img.shields.io/github/issues-pr/deveshjhaq/ServedoorCustomerApp)](https://github.com/deveshjhaq/ServedoorCustomerApp/pulls)
-[![Issues](https://img.shields.io/github/issues/deveshjhaq/ServedoorCustomerApp)](https://github.com/deveshjhaq/ServedoorCustomerApp/issues)
-[![License](https://img.shields.io/github/license/deveshjhaq/ServedoorCustomerApp)](https://github.com/deveshjhaq/ServedoorCustomerApp/blob/main/LICENSE)
-[![Last Commit](https://img.shields.io/github/last-commit/deveshjhaq/ServedoorCustomerApp)](https://github.com/deveshjhaq/ServedoorCustomerApp/commits/main)
-[![Follow me on GitHub](https://img.shields.io/github/followers/deveshjhaq?label=Follow&style=social)](https://github.com/deveshjhaq)
-<a href="https://discord.com/invite/eMcMEA6Jce" target="_blank">
-  <img
-    src="https://dcbadge.limes.pink/api/server/https://discord.com/invite/eMcMEA6Jce?style=shield"
-    alt="discord invite"
-  />
-</a>
 # Servedoor Customer App
-</div>
 
-Servedoor customer app is a Flutter mobile application for restaurant discovery and ordering workflows integrated with the Servedoor backend API.
+Servedoor Customer App is a Flutter mobile application for restaurant discovery, cart, ordering, profile management, favorites, reviews, gallery browsing, and payment flows.
 
+## Tech Stack
 
-<br/>
+- Flutter (Dart)
+- REST API integration with Servedoor FastAPI backend
 
-**Note: This Flutter Template Contains Placeholder Content for Demo Purposes. This project is still in active development. If you want to add or improve features, make sure to fork and contribute to this repo. Don't forget to star 🌟 the repo if you like it!**
+## Key Features
 
-## Getting Started
+- OTP-based sign-in
+- Restaurant list and menu browsing
+- Cart management and order placement
+- Order history and tracking
+- Profile and address management
+- Favorites, gallery, and reviews
+- Payment methods and verification integration
 
-This project serves as a starting point for a Flutter application inspired by Medium.
+## Prerequisites
 
-### Prerequisites
+- Flutter SDK (stable)
+- Android Studio or VS Code with Flutter extension
+- Running Servedoor backend API
 
-Before you begin, ensure you have Flutter installed. For detailed instructions, refer to the [Flutter documentation](https://docs.flutter.dev/get-started/install).
+## Setup
 
-### Installation
+1. Go to app directory:
 
-1. Clone the repository:
+```bash
+cd "custmer app"
+```
 
-    ```bash
-    git clone https://github.com/deveshjhaq/ServedoorCustomerApp.git
-    ```
+2. Install dependencies:
 
-2. Change to the project directory:
+```bash
+flutter pub get
+```
 
-    ```bash
-    cd ServedoorCustomerApp
-    ```
+3. Configure backend base URL in:
 
-3. Install dependencies:
+- lib/utils/ServedoorConstant.dart
 
-    ```bash
-    flutter pub get
-    ```
+4. Run app:
 
-4. Run the app:
+```bash
+flutter run
+```
 
-    ```bash
-    flutter run
-    ```
+## API Host Configuration
 
-  ### Backend Configuration
+- Android emulator: use 10.0.2.2 for localhost mapping
+- Physical device: use your machine LAN IP
 
-  The app reads API host from [lib/utils/ServedoorConstant.dart](lib/utils/ServedoorConstant.dart).
+Example:
 
-  - Android emulator default: `http://10.0.2.2:8000`
-  - Physical device: replace with your local machine IP (for example `http://192.168.1.10:8000`)
+- http://10.0.2.2:8001/api
 
-## Resources
+## Project Layout
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- lib/screen: UI screens
+- lib/services: API service layer
+- lib/utils: constants, widgets, helpers
 
-For detailed information on Flutter development, refer to the [online documentation](https://docs.flutter.dev/), which includes tutorials, samples, guidance on mobile development, and a full API reference.
+## Testing
 
-Feel free to customize this README to include more specific details
+```bash
+flutter test
+```
 
-## Contributing
+## Notes
 
-Contributions are welcomed! If you find ways to improve this demo or want to add features, please consider forking the repository and submitting a pull request. Before contributing, read the [Contributing Guidelines](CONTRIBUTING.md) for a smooth collaboration.
-
-## Code of Conduct
-
-Please review our [Code of Conduct](CODE_OF_CONDUCT.md) to understand the standards of behavior we expect from contributors and users of this project.
+- Keep secrets and private endpoints out of source code.
+- Use environment-safe URLs for staging and production.
 
 ## License
 
-This project is licensed under the [Apache 2.0 License](./LICENSE). See [LICENSE](./LICENSE) for more details.
-
-## Support
-
-If you find this template helpful, consider giving it a star. Your support is appreciated! 💙
-
-Also, if you'd like to offer more support, you can:
-
-- [Sponsor on GitHub](https://github.com/sponsors/deveshjhaq)
-
-
-## Happy Coding ❤️
+Use your repository license terms.
 
