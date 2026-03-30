@@ -1,19 +1,17 @@
-export function sanitize(value) {
-  if (typeof value !== 'string') return value;
-
-  return value
+/**
+ * Sanitizes user input by removing potentially dangerous content
+ * @param {string} str - The string to sanitize
+ * @returns {string} - The sanitized string
+ */
+export function sanitize(str) {
+  if (typeof str !== 'string') return str
+  
+  return str
+    // Remove script tags and their content
     .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
+    // Remove all HTML tags
     .replace(/<[^>]+>/g, '')
+    // Remove javascript: URIs
     .replace(/javascript:/gi, '')
-    .trim();
-}
-
-export function sanitizeObject(input) {
-  if (!input || typeof input !== 'object') return input;
-
-  const sanitized = {};
-  Object.keys(input).forEach((key) => {
-    sanitized[key] = sanitize(input[key]);
-  });
-  return sanitized;
+    .trim()
 }

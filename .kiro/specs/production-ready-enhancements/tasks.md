@@ -73,11 +73,11 @@ This plan implements production-grade enhancements for serveDoor across six majo
   - Ensure all tests pass, manually test error boundaries, 404 page, and admin route protection. Ask the user if questions arise.
 
 - [ ] 6. Implement form validation infrastructure
-  - [-] 6.1 Create Zod validation schemas
+  - [x] 6.1 Create Zod validation schemas
     - Create `frontend/src/lib/validationSchemas.js` with phoneSchema, emailSchema, passwordSchema, loginSchema, registerSchema, addressSchema, couponSchema
     - _Requirements: 2.1.AC4, 2.1.AC5, 2.1.AC6_
   
-  - [~] 6.2 Create input sanitization utility
+  - [-] 6.2 Create input sanitization utility
     - Create `frontend/src/utils/sanitize.js` with sanitize() function stripping script tags, HTML, and javascript: URIs
     - _Requirements: 2.4.AC1_
   
