@@ -1,6 +1,20 @@
 # Servedoor Customer App
 
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=for-the-badge)](#setup)
+[![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?style=for-the-badge)](#tech-stack)
+[![API](https://img.shields.io/badge/API-FastAPI-009688?style=for-the-badge)](#api-host-configuration)
+
 Servedoor Customer App is a Flutter mobile application for restaurant discovery, cart, ordering, profile management, favorites, reviews, gallery browsing, and payment flows.
+
+## Quick Navigation
+
+- [Tech Stack](#tech-stack)
+- [Key Features](#key-features)
+- [Prerequisites](#prerequisites)
+- [Setup](#setup)
+- [API Host Configuration](#api-host-configuration)
+- [Project Layout](#project-layout)
+- [Testing](#testing)
 
 ## Tech Stack
 
@@ -47,6 +61,12 @@ flutter pub get
 flutter run
 ```
 
+5. Build release APK (optional):
+
+```bash
+flutter build apk --release
+```
+
 ## API Host Configuration
 
 - Android emulator: use 10.0.2.2 for localhost mapping
@@ -72,6 +92,7 @@ flutter test
 
 - Keep secrets and private endpoints out of source code.
 - Use environment-safe URLs for staging and production.
+- Prefer separate base URLs for local, staging, and production builds.
 
 ## License
 

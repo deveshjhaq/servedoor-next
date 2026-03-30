@@ -1,4 +1,9 @@
-# Servedoor Platform (Universal README)
+# Servedoor Platform
+
+[![Backend](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge)](#1-backend-setup)
+[![Database](https://img.shields.io/badge/Database-MongoDB-4DB33D?style=for-the-badge)](#prerequisites)
+[![Frontend](https://img.shields.io/badge/Web-React-61DAFB?style=for-the-badge)](#2-web-frontend-setup)
+[![Mobile](https://img.shields.io/badge/Mobile-Flutter-02569B?style=for-the-badge)](#3-flutter-customer-app-setup)
 
 Servedoor is a full food-ordering platform with three major parts:
 
@@ -6,7 +11,16 @@ Servedoor is a full food-ordering platform with three major parts:
 - Web frontend (React + CRACO)
 - Customer mobile app (Flutter)
 
-This README is the universal setup and usage guide for the complete workspace.
+This is the universal setup and usage guide for the complete workspace.
+
+## Quick Navigation
+
+- [Prerequisites](#prerequisites)
+- [Backend Setup](#1-backend-setup)
+- [Web Frontend Setup](#2-web-frontend-setup)
+- [Flutter Customer App Setup](#3-flutter-customer-app-setup)
+- [Testing](#running-tests)
+- [Translations](#readme-translations)
 
 ## Workspace Structure
 
@@ -113,8 +127,8 @@ flutter test
 
 Universal README translations are available in:
 
-- README.en.md
-- README.hi.md
-- README.es.md
-- README.zh.md
-- README.ar.md
+- [English](README.en.md)
+- [Hindi](README.hi.md)
+- [Spanish](README.es.md)
+- [Chinese](README.zh.md)
+- [Arabic](README.ar.md)
